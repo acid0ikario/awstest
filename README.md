@@ -18,7 +18,10 @@ This repository provides tools to scrape AWS exam questions and a simple fronten
 
 2. Clean or modify the JSON with the helper scripts in `scripts/` if needed.
 
-3. Open `web/index.html` in a browser to use the quiz interface.
+3. Serve the project or open the main page in a browser:
+   - You can simply open `index.html` from the repository root, which
+     redirects to the `web/` folder.
+   - Alternatively open `web/index.html` directly.
 
 ## Architecture
 
