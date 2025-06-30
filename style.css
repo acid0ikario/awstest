@@ -1,0 +1,41 @@
+body {
+  background: linear-gradient(135deg, #4f8cff 0%, #e0e7ff 100%);
+  min-height: 100vh;
+}
+.card {
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+#quiz-container {
+  min-height: 220px;
+}
+.option-label {
+  cursor: pointer;
+}
+.form-check-input:checked + .form-check-label {
+  font-weight: bold;
+  color: #0d6efd;
+}
+.form-check-label {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
+#result-container {
+  font-size: 1.1rem;
+}
+.progress {
+  background: #e9ecef;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.progress-bar {
+  font-weight: 500;
+  font-size: 1rem;
+}
+@media (max-width: 576px) {
+  .card-body { padding: 1rem; }
+  h2 { font-size: 1.5rem; }
+}
