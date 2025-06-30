@@ -95,7 +95,7 @@
       this.ui.totalQuestionsSel.value = this.state.totalQuestionsOpt;
 
       /* Fetch questions JSON */
-      const raw = await fetch('saa-c03-questions.json').then(r => r.json());
+      const raw = await fetch('data/saa-c03-questions.json').then(r => r.json());
       this.state.questions = raw.filter(q => q.question && Object.keys(q.options).length);
 
       /* Load persisted progress (includes order) */

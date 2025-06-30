@@ -1,8 +1,12 @@
 import json
 from collections import OrderedDict
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA_FILE = ROOT / 'web' / 'data' / 'saa-c03-questions.json'
 
 # Read the JSON file
-with open('saa-c03-questions.json', 'r') as f:
+with DATA_FILE.open('r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Create new list for modified questions
@@ -18,5 +22,5 @@ for i, question in enumerate(data, 1):
     enumerated_questions.append(new_question)
 
 # Write back to file with proper formatting
-with open('saa-c03-questions.json', 'w') as f:
-    json.dump(enumerated_questions, f, indent=2)
+with DATA_FILE.open('w', encoding='utf-8') as f:
+    json.dump(enumerated_questions, f, indent=2, ensure_ascii=False)

@@ -1,7 +1,11 @@
 import json
 import re
+from pathlib import Path
 
-with open('saa-c03-questions.json', 'r') as f:
+ROOT = Path(__file__).resolve().parents[1]
+DATA_FILE = ROOT / 'web' / 'data' / 'saa-c03-questions.json'
+
+with DATA_FILE.open('r', encoding='utf-8') as f:
     data = json.load(f)
 
 fixed = []
@@ -17,5 +21,5 @@ for q in data:
             q['question'] = stem
     fixed.append(q)
 
-with open('saa-c03-questions.json', 'w') as f:
-    json.dump(fixed, f, indent=2)
+with DATA_FILE.open('w', encoding='utf-8') as f:
+    json.dump(fixed, f, indent=2, ensure_ascii=False)

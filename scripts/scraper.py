@@ -8,6 +8,9 @@ import json
 import time
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+DATA_FILE = ROOT / 'web' / 'data' / 'saa-c03-questions.json'
+
 import requests                      # pip install requests
 from bs4 import BeautifulSoup        # pip install beautifulsoup4
 
@@ -68,7 +71,6 @@ for page in range(2, 257):           # site shows “Viewing Page 256 of 256”
     time.sleep(1)                    # polite crawling
 
 # write JSON pretty-printed
-dst = Path("saa-c03-questions.json")
-dst.write_text(json.dumps(out, indent=2, ensure_ascii=False))  # json indent :contentReference[oaicite:4]{index=4}
-print(f"\nSaved {len(out)} questions ➜ {dst.resolve()}")
+DATA_FILE.write_text(json.dumps(out, indent=2, ensure_ascii=False))
+print(f"\nSaved {len(out)} questions ➜ {DATA_FILE.resolve()}")
   
