@@ -1,8 +1,9 @@
 import json
 from pathlib import Path
 
-src = Path("saa-c03-questions.json")
-out = Path("saa-c03-questions-cleaned.json")
+ROOT = Path(__file__).resolve().parents[1]
+src = ROOT / 'web' / 'data' / 'saa-c03-questions.json'
+out = ROOT / 'web' / 'data' / 'saa-c03-questions-cleaned.json'
 
 def normalize_question(q):
     # Normalize by stripping whitespace and lowering case
