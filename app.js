@@ -230,11 +230,33 @@ function showResult() {
     const user = userAnswers[i];
     const isCorrect = user && q.correct && q.correct.includes(user);
     if (isCorrect) correct++;
+    // Build options list for collapse
+    let optionsHtml = '';
+    for (const [key, value] of Object.entries(q.options)) {
+      let optClass = '';
+      if (q.correct && q.correct.includes(key)) {
+        optClass = 'text-success fw-bold';
+      } else if (user === key) {
+        optClass = 'text-danger';
+      }
+      optionsHtml += `<div class="mb-1 ${optClass}"><b>${key}.</b> ${value}</div>`;
+    }
+    // Unique collapse id per question
+    const collapseId = `collapseAnswer${i}`;
     review += `<div class="card mb-3 ${isCorrect ? 'border-success' : 'border-danger'}">
       <div class="card-body">
         <div class="mb-2"><span class="badge bg-secondary">Q${q.enumeration}</span> ${q.question}</div>
         <div>Your answer: <b>${user || 'None'}</b> ${isCorrect ? '<span class=\'text-success\'>✅</span>' : '<span class=\'text-danger\'>❌</span>'}</div>
         <div>Correct answer: <b>${(q.correct||[]).join(', ')}</b></div>
+        <button class="btn btn-link p-0 mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
+          <span class="show-text">Show Answer Details</span>
+          <span class="hide-text d-none">Hide Answer Details</span>
+        </button>
+        <div class="collapse mt-2" id="${collapseId}">
+          <div class="card card-body border-0 p-2">
+            ${optionsHtml}
+          </div>
+        </div>
       </div>
     </div>`;
   });
@@ -245,6 +267,24 @@ function showResult() {
   document.getElementById('submit-btn').classList.add('d-none');
   document.getElementById('progress-bar').style.width = '100%';
   document.getElementById('progress-bar').textContent = '100%';
+
+  // Toggle button text on collapse show/hide
+  setTimeout(() => {
+    document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(btn => {
+      const target = btn.getAttribute('data-bs-target');
+      if (!target) return;
+      const collapseEl = document.querySelector(target);
+      if (!collapseEl) return;
+      collapseEl.addEventListener('show.bs.collapse', () => {
+        btn.querySelector('.show-text').classList.add('d-none');
+        btn.querySelector('.hide-text').classList.remove('d-none');
+      });
+      collapseEl.addEventListener('hide.bs.collapse', () => {
+        btn.querySelector('.show-text').classList.remove('d-none');
+        btn.querySelector('.hide-text').classList.add('d-none');
+      });
+    });
+  }, 0);
 }
 
 // Add Bootstrap modal for reset confirmation
