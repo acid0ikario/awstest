@@ -10,8 +10,8 @@
   'use strict';
 
   /* -------------------- constants -------------------- */
-  const STORAGE_KEY          = 'quiz-progress-v1';
-  const TOTAL_QUESTIONS_KEY  = 'quiz-total-questions';
+  const STORAGE_KEY         = 'quiz-progress-v1';
+  const TOTAL_QUESTIONS_KEY = 'quiz-total-questions';
 
   /* -------------------- helpers ---------------------- */
   const qs  = (sel) => document.querySelector(sel);
@@ -98,11 +98,11 @@
       const raw = await fetch('saa-c03-questions.json').then(r => r.json());
       this.state.questions = raw.filter(q => q.question && Object.keys(q.options).length);
 
-      /* Apply total‑questions subset early */
-      this.applyTotalQuestionsSubset();
-
       /* Load persisted progress (includes order) */
       this.loadProgress();
+
+      /* Apply total‑questions subset using stored order if present */
+      this.applyTotalQuestionsSubset();
 
       /* Ensure question order is stable */
       if (this.state.questionOrder.length === this.state.questions.length) {
@@ -160,8 +160,18 @@
 
     /* ------------------- data helpers ----------------------- */
     applyTotalQuestionsSubset() {
-      const opt = this.state.totalQuestionsOpt;
+      const opt  = this.state.totalQuestionsOpt;
+      const order = this.state.questionOrder;
+
+      /* When we have a stored order, retain the exact subset */
+      if (order.length) {
+        const set = new Set(order);
+        this.state.questions = this.state.questions.filter(q => set.has(q.enumeration));
+        return;
+      }
+
       if (opt === 'all') return;
+
       const n = Number(opt);
       if (Number.isFinite(n) && n > 0 && n < this.state.questions.length) {
         shuffle(this.state.questions);
